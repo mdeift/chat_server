@@ -2,7 +2,8 @@
 
 import couchdb
 from CouchDbWrapper import CouchDbWrapper
-from reactor import UserOperations
+from UserDbOperations import UserOperations
+from MessageDbOperations import MessageOperations
 from uuid import uuid4
 from bottle import run
 #doc_id = uuid4().hex
@@ -41,7 +42,8 @@ class Backend():
         self.usersDb = DbWrapper(dbname='users_db')
         
     def initReactors(self):
-        self.userOp = UserOperations(self.usersDb)        
+        self.userOp = UserOperations(self.usersDb)
+        self.messageOp = MessageOperations(self.pendingDb, self.archiveDb)        
         
 def main():
     Backend(CouchDbWrapper)

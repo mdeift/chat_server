@@ -22,11 +22,19 @@ class CouchDbWrapper:
         
     def delete(self, dbname):
         del self.server[dbname]
-                
+              
+    def createMapFunction(self, key):
+        map_fun = "function(doc) {\n\
+        if (doc." + key + ")\n\
+        emit(doc." + key + ", doc.id);\n\
+        }" 
+        return map_fun       
     def find(self, key, value):
-        map_fun = '''function(doc) {
-            if (doc.name)
-            emit(doc.name, doc.id);
+        map_fun = self.createMapFunction(key) 
+        
+        '''function(doc) {
+            if (doc.To)
+            emit(doc.To, doc.id);
             }'''
         for row in self.db.query(map_fun):
             if row.key == value:

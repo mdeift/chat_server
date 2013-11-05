@@ -1,0 +1,3 @@
+''function(doc) {\n        if (doc.To)\n        emit(doc.To, doc.id);\n        }'''
+
+function(doc) {\n            if (doc.To)\n            emit(doc.To, doc.id);\n            }

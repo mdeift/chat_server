@@ -1,3 +1,11 @@
 curl -H "Content-Type: application/json" -H "Accept: application/json" -X DELETE -d '{"name" : "Michael", "age" : 30}' http://localhost:8080/_user
 
 curl -H "Content-Type: application/json" -H "Accept: application/json" -X PUT -d '{"name" : "Michael", "age" : 30}' http://localhost:8080/_user
+
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X PUT -d '{"name" : "David", "age" : 30}' http://localhost:8080/_user
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X PUT -d '{"name" : "Moshe", "age" : 30}' http://localhost:8080/_user
+
+
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X PUT -d '{"From" : "Michael", "To" : "David", "Time" : 1, "Payload" : "message#1"}' http://localhost:8080/_message
+
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X GET -d '{"To" : "David"}' http://localhost:8080/_message
