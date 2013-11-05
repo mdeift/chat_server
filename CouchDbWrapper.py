@@ -28,14 +28,11 @@ class CouchDbWrapper:
         if (doc." + key + ")\n\
         emit(doc." + key + ", doc.id);\n\
         }" 
-        return map_fun       
+        return map_fun 
+          
     def find(self, key, value):
         map_fun = self.createMapFunction(key) 
         
-        '''function(doc) {
-            if (doc.To)
-            emit(doc.To, doc.id);
-            }'''
         for row in self.db.query(map_fun):
             if row.key == value:
                 return True, self.db.get(row.id)
