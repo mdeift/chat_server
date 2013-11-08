@@ -1,38 +1,18 @@
-#! python
+#! /usr/bin/python
 
-import couchdb
 from CouchDbWrapper import CouchDbWrapper
 from UserDbOperations import UserOperations
 from MessageDbOperations import MessageOperations
-from uuid import uuid4
+#from uuid import uuid4
 from bottle import run
+from Logger import ERROR, WARNING, INFO, Log
+import Logger
 #doc_id = uuid4().hex
-
-'''
-server = couchdb.Server()
-del server['python-tests']
-
-db = server.create('python-tests')
-
-doc_id, doc_rev = db.save({'type': 'Person', 'name': 'John Doe'})
-
-db['johndoe'] = dict(type='Person', name='John Doe')
-'''
-#map_fun = '''function(doc) {
-#    if (doc.type == 'Person')
-#    emit(doc.name, null);
-#    }'''
-#for row in db.query(map_fun):
-#    print row.key
-
-#for row in db.query(map_fun, descending=True):
-#    print row.key
-#for row in db.query(map_fun, key='John Doe'):
-#    print row.key
 
 class Backend():
        
     def __init__(self, DbWrapper=''):
+        Log(INFO, "Start Backend")
         self.initDbs(DbWrapper)
         self.initReactors()
                 
@@ -43,11 +23,12 @@ class Backend():
         
     def initReactors(self):
         self.userOp = UserOperations(self.usersDb)
-        self.messageOp = MessageOperations(self.pendingDb, self.archiveDb)        
+        self.messageOp = MessageOperations(self.pendingDb, self.archiveDb)     
         
-def main():
+def main():    
+    Logger.openLogFile('/var/tmp/chat_server.log')
     Backend(CouchDbWrapper)
-    run(host='localhost', port=8080, debug=True)    
+    run(host='localhost', port=8080, debug=True)   
  
 if __name__ == "__main__":
     main()    

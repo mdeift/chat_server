@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 '''
 Created on Nov 5, 2013
 
@@ -20,11 +22,8 @@ pull_message =
     To : "NAME"
 }
 '''
-
-
-import json
-from urllib2 import HTTPError
-from bottle import route, run, request, HTTPResponse
+from bottle import route, request
+from Logger import ERROR, WARNING, INFO, Log
 
 ''' Handle Users Operations '''
 
@@ -47,6 +46,7 @@ class MessageOperations:
         Perform Name validations
         '''
         
+        Log(INFO, 'Received push request ' + str(req) )
         self.pendingDb.insert(req)
         return { "success" : True }
     
@@ -54,12 +54,18 @@ class MessageOperations:
     def pullMessage(self, name):
         #req = request.json
         
+        Log(INFO, 'Received pull request for \"name\"= ' + name )
+        
         b, obj = self.pendingDb.find('To', name)
         
         if obj:
             self.pendingDb.remove(obj)
-            self.archiveDb.insert(obj)                       
+            self.archiveDb.insert(obj)           
+            
+            Log(INFO, 'Return message= ' + str(obj) )            
             return { "success" : True, "message" : obj }
+        
+        Log(INFO, 'Not Found message' )
         return { "success" : False }
     
 
