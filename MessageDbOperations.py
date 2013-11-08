@@ -30,13 +30,14 @@ from bottle import route, run, request, HTTPResponse
 
 class MessageOperations:
 
-    route_message = '/_message'
+    route_message_put = '/_message/'
+    route_message_get = '/_message/<name>'
     
     def __init__(self, pendingDb, archiveDb):
         self.pendingDb = pendingDb
         self.archiveDb = archiveDb
-        route(self.route_message, method='PUT')(self.pushMessage)
-        route(self.route_message, method='GET')(self.pullMessage)        
+        route(self.route_message_put, method='PUT')(self.pushMessage)
+        route(self.route_message_get, method='GET')(self.pullMessage)        
         
     #@route(route_message, method='PUT', )
     def pushMessage(self):      
@@ -50,10 +51,10 @@ class MessageOperations:
         return { "success" : True }
     
     #@route(route_message, method='GET' )
-    def pullMessage(self):
-        req = request.json
+    def pullMessage(self, name):
+        #req = request.json
         
-        b, obj = self.pendingDb.find('To', req['To'])
+        b, obj = self.pendingDb.find('To', name)
         
         if obj:
             self.pendingDb.remove(obj)
